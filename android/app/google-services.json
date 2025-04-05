@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "855026607539",
+    "project_id": "sudeninistedigioyun",
+    "storage_bucket": "sudeninistedigioyun.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:855026607539:android:6ad350cf0cd1aba09a97c6",
+        "android_client_info": {
+          "package_name": "com.omerfaruk.cmfl12c"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "855026607539-32hm8epi2pjrn9cl2o0sflvokgvlu8tt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.omerfaruk.cmfl12c",
+            "certificate_hash": "82c4c014cafdaa28fed6c7425b4a09138bec6f86"
+          }
+        },
+        {
+          "client_id": "855026607539-07cnufkph718u5smtqs55kj2mvta9956.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCog9EN1Wg123UQneckc8EssE90VmAS4cA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "855026607539-07cnufkph718u5smtqs55kj2mvta9956.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "855026607539-cael6ku3kfuu8gq18ce3oivq7l0ablp6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.omerfaruk.cmfl12c"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
