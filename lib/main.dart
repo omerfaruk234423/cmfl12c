@@ -441,11 +441,73 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => WordleGame()),
-                    );
+                  onTap: () async {
+                     
+    bool frekansli = false;
+    int zorluk = 5;
+
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) => AlertDialog(
+            title: const Text("Wordle Ayarları"),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SwitchListTile(
+                  title: const Text("Frekans Temelli Oyna"),
+                  value: frekansli,
+                  onChanged: (val) => setState(() => frekansli = val),
+                ),
+                if (frekansli)
+                  Column(
+                    children: [
+                      const Text("Zorluk Seviyesi (1-10)"),
+                      Slider(
+                        value: zorluk.toDouble(),
+                        min: 1,
+                        max: 10,
+                        divisions: 9,
+                        label: zorluk.toString(),
+                        onChanged: (val) => setState(() => zorluk = val.toInt()),
+                      ),
+                    ],
+                  ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text("İptal"),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(
+                    context,
+                    WordleSettings(
+                      frekansTemelli: frekansli,
+                      zorlukSeviyesi: zorluk,
+                    ),
+                  );
+                },
+                child: const Text("Başla"),
+              ),
+            ],
+          ),
+        );
+      },
+    ).then((settings) {
+      if (settings is WordleSettings) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => WordleGame(settings: settings),
+          ),
+        );
+      }
+    });
+  
                   },
                   child: Card(
                     child: Column(
@@ -471,14 +533,13 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ],
-             
             ),
             Center(
               child: GestureDetector(
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => OptionsAdamAsmaca()),
+                    MaterialPageRoute(builder: (_) => PekYakinda()),
                   );
                 },
                 child: Card(
@@ -512,7 +573,7 @@ class _HomeState extends State<Home> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => OptionsAdamAsmaca()),
+                      MaterialPageRoute(builder: (_) => PekYakinda()),
                     );
                   },
                   child: Card(
@@ -542,7 +603,7 @@ class _HomeState extends State<Home> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => OptionsAdamAsmaca()),
+                      MaterialPageRoute(builder: (_) => PekYakinda()),
                     );
                   },
                   child: Card(
@@ -569,7 +630,6 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ],
-              
             ),
           ],
         ),
@@ -577,19 +637,33 @@ class _HomeState extends State<Home> {
     );
   }
 }
+class PekYakinda extends StatefulWidget {
+  const PekYakinda({super.key});
 
+  @override
+  State<PekYakinda> createState() => _PekYakindaState();
+}
 
+class _PekYakindaState extends State<PekYakinda> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(appBar: AppBar(title: Text("Geri"),), body: Center(child: Text("Pek Yakında...",style: TextStyle(fontSize: 48),),),);
+  }
+}
+class WordleSettings {
+  final bool frekansTemelli;
+  final int zorlukSeviyesi;
 
-
-
-
-
-
-
-
+  WordleSettings({
+    required this.frekansTemelli,
+    required this.zorlukSeviyesi,
+  });
+}
 
 class WordleGame extends StatefulWidget {
-  const WordleGame({super.key});
+    final WordleSettings settings;
+
+  const WordleGame({super.key, required this.settings});
 
   @override
   State<WordleGame> createState() => _WordleGameState();
@@ -604,8 +678,10 @@ class _WordleGameState extends State<WordleGame> {
   String targetCsvMeaning = "";
 
   List<String> guesses = List.filled(6, "");
-  List<List<Color>> guessColors =
-      List.generate(6, (_) => List.filled(5, Colors.grey[300]!));
+  List<List<Color>> guessColors = List.generate(
+    6,
+    (_) => List.filled(5, Colors.grey[300]!),
+  );
   final Map<String, Color> letterStatus = {};
 
   int currentRow = 0;
@@ -614,11 +690,7 @@ class _WordleGameState extends State<WordleGame> {
   bool gameEnded = false;
   bool isWin = false;
 
-  final List<String> keyboardRows = [
-    'ERTYUIOPĞÜ',
-    'ASDFGHJKLŞ',
-    'İZCVBNMÖÇ'
-  ];
+  final List<String> keyboardRows = ['ERTYUIOPĞÜ', 'ASDFGHJKLŞ', 'İZCVBNMÖÇ'];
 
   @override
   void initState() {
@@ -633,37 +705,58 @@ class _WordleGameState extends State<WordleGame> {
     });
   }
 
-  Future<void> loadWords() async {
-    final String jsonWordle = await rootBundle.loadString('assets/wordle_oyun_kelimeleri.json');
-    final String jsonValid = await rootBundle.loadString('assets/tum_5harfli_kelimeler.json');
+Future<void> loadWords() async {
+  final String jsonWordle = await rootBundle.loadString(
+    'assets/wordle_oyun_kelimeleri_frekansli_full.json',
+  );
+  final String jsonValid = await rootBundle.loadString(
+    'assets/tum_5harfli_kelimeler.json',
+  );
 
-    final List<dynamic> wordleList = jsonDecode(jsonWordle);
-    final List<dynamic> validList = jsonDecode(jsonValid);
+  final List<dynamic> wordleList = jsonDecode(jsonWordle);
+  final List<dynamic> validList = jsonDecode(jsonValid);
 
-    allWordData = wordleList
-        .where((item) =>
-            item is Map<String, dynamic> &&
-            item["kelime"] != null &&
-            item["json_anlam"] != null &&
-            item["csv_anlam"] != null)
-        .map((e) => {
-              "kelime": turkishToUpper(e["kelime"]),
-              "json_anlam": e["json_anlam"],
-              "csv_anlam": e["csv_anlam"]
-            })
-        .toList();
+  List<Map<String, dynamic>> kelimeler = wordleList
+      .where((item) =>
+          item is Map<String, dynamic> &&
+          item["kelime"] != null &&
+          item["json_anlam"] != null &&
+          item["csv_anlam"] != null)
+      .cast<Map<String, dynamic>>()
+      .toList();
 
-    validWordList = validList.map((e) => turkishToUpper(e.toString())).toList();
-
-    allWordData.shuffle(Random());
-    final randomItem = allWordData.first;
-
-    setState(() {
-      targetWord = randomItem["kelime"];
-      targetJsonMeaning = randomItem["json_anlam"];
-      targetCsvMeaning = randomItem["csv_anlam"];
-    });
+  if (widget.settings.frekansTemelli) {
+    kelimeler = kelimeler.where((e) => e["grup"] == widget.settings.zorlukSeviyesi).toList();
   }
+
+  allWordData = kelimeler
+      .map((e) => {
+            "kelime": turkishToUpper(e["kelime"]),
+            "json_anlam": e["json_anlam"],
+            "csv_anlam": e["csv_anlam"],
+          })
+      .toList();
+
+  validWordList = validList.map((e) => turkishToUpper(e.toString())).toList();
+
+  if (allWordData.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Bu ayarlar için uygun kelime bulunamadı.")),
+    );
+    return;
+  }
+
+  allWordData.shuffle(Random());
+  final randomItem = allWordData.first;
+
+  setState(() {
+    targetWord = randomItem["kelime"];
+    targetJsonMeaning = randomItem["json_anlam"];
+    targetCsvMeaning = randomItem["csv_anlam"];
+  });
+}
+
+
 
   void addLetter(String letter) {
     if (gameEnded) return;
@@ -678,7 +771,10 @@ class _WordleGameState extends State<WordleGame> {
     if (gameEnded) return;
     if (guesses[currentRow].isNotEmpty) {
       setState(() {
-        guesses[currentRow] = guesses[currentRow].substring(0, guesses[currentRow].length - 1);
+        guesses[currentRow] = guesses[currentRow].substring(
+          0,
+          guesses[currentRow].length - 1,
+        );
       });
     }
   }
@@ -772,7 +868,11 @@ class _WordleGameState extends State<WordleGame> {
   void rewardUser() {
     FirebaseFirestore.instance
         .collection("allusers")
-        .doc(FirebaseAuth.instance.currentUser!.isAnonymous ? "anonymous" : "google")
+        .doc(
+          FirebaseAuth.instance.currentUser!.isAnonymous
+              ? "anonymous"
+              : "google",
+        )
         .collection("users")
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .update({"coin": FieldValue.increment(5)});
@@ -789,7 +889,10 @@ class _WordleGameState extends State<WordleGame> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Kelime: $targetWord", style: const TextStyle(fontWeight: FontWeight.bold)),
+              Text(
+                "Kelime: $targetWord",
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
               const SizedBox(height: 8),
               Text("📖 JSON Anlam: $targetJsonMeaning"),
               Text("📚 CSV Anlam: $targetCsvMeaning"),
@@ -803,7 +906,7 @@ class _WordleGameState extends State<WordleGame> {
                 Navigator.pop(context);
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (_) => const WordleGame()),
+                  MaterialPageRoute(builder: (_) => WordleGame(settings: widget.settings,)),
                 );
               },
               child: const Text("Tekrar Oyna"),
@@ -815,14 +918,20 @@ class _WordleGameState extends State<WordleGame> {
   }
 
   void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   String turkishToUpper(String input) {
     const specialMap = {
-      'i': 'İ', 'ş': 'Ş', 'ğ': 'Ğ',
-      'ü': 'Ü', 'ö': 'Ö', 'ç': 'Ç',
-      'ı': 'I'
+      'i': 'İ',
+      'ş': 'Ş',
+      'ğ': 'Ğ',
+      'ü': 'Ü',
+      'ö': 'Ö',
+      'ç': 'Ç',
+      'ı': 'I',
     };
     return input.split('').map((c) => specialMap[c] ?? c.toUpperCase()).join();
   }
@@ -847,7 +956,10 @@ class _WordleGameState extends State<WordleGame> {
               ),
               child: Text(
                 letter,
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             );
           }),
@@ -856,7 +968,7 @@ class _WordleGameState extends State<WordleGame> {
     );
   }
 
-Widget buildKeyboard() {
+  Widget buildKeyboard() {
     return LayoutBuilder(
       builder: (context, constraints) {
         final isMobile = constraints.maxWidth < 600;
@@ -981,7 +1093,6 @@ Widget buildKeyboard() {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     if (targetWord.isEmpty) {
@@ -995,7 +1106,10 @@ Widget buildKeyboard() {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("Süre: $secondsPassed sn", style: const TextStyle(fontSize: 18)),
+              Text(
+                "Süre: $secondsPassed sn",
+                style: const TextStyle(fontSize: 18),
+              ),
               const SizedBox(height: 12),
               buildGrid(),
               const SizedBox(height: 12),
@@ -1014,9 +1128,6 @@ Widget buildKeyboard() {
   }
 }
 
-
-
-
 class OptionsAdamAsmaca extends StatefulWidget {
   const OptionsAdamAsmaca({super.key});
 
@@ -1025,6 +1136,8 @@ class OptionsAdamAsmaca extends StatefulWidget {
 }
 
 class _OptionsAdamAsmacaState extends State<OptionsAdamAsmaca> {
+  final TextEditingController customTopicController = TextEditingController();
+
   String selectedCategory = "Rastgele";
   String selectedAiModel = "GPT-4";
 
@@ -1064,6 +1177,7 @@ class _OptionsAdamAsmacaState extends State<OptionsAdamAsmaca> {
     "Okul Dersleri",
     "Doğa Olayları",
     "Türkçe Zor Kelimeler",
+    "Özel Konu",
   ];
   bool isLoading = false;
   String? errorMessage;
@@ -1099,16 +1213,21 @@ class _OptionsAdamAsmacaState extends State<OptionsAdamAsmaca> {
       errorMessage = null;
     });
 
+    final String konu =
+        customTopicController.text.trim().isNotEmpty
+            ? customTopicController.text.trim()
+            : selectedCategory;
+
     final prompt = '''
 Sen bir yapay zeka asistanısın. Sadece geçerli bir JSON nesnesi döndürmelisin.
 
-Lütfen "$selectedCategory" konusunda toplam $selectedGameCount adet Türkçe kelime veya kelime grubu üret ve aşağıdaki JSON formatına uygun döndür ve kelime gruplarında harf dışında virgül kesme işareti vb olmasın.virgül sadece kelime ve kelime gruplarını ayırmada kullan:
+Lütfen "$konu" konusunda toplam $selectedGameCount adet Türkçe kelime veya kelime grubu üret ve aşağıdaki JSON formatına uygun döndür:
 
 {
   "words": ["kelime1", "kelime2", "kelime3", "..."]
 }
 
-Lütfen sadece JSON olarak yanıt ver. Açıklama veya \`\`\` işareti ekleme. UTF-8 uyumlu ver ve bozuk karakter kullanma.
+Sadece geçerli JSON döndür. Açıklama veya \`\`\` işareti ekleme. UTF-8 ver, bozuk karakter verme.
 ''';
 
     try {
@@ -1116,7 +1235,7 @@ Lütfen sadece JSON olarak yanıt ver. Açıklama veya \`\`\` işareti ekleme. U
         final modelName =
             selectedAiModel == "GPT-4" ? "gpt-4" : "gpt-3.5-turbo";
         final apiKey =
-            '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';
+            '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';
         final url = 'https://api.openai.com/v1/chat/completions';
 
         final response = await http.post(
@@ -1136,12 +1255,13 @@ Lütfen sadece JSON olarak yanıt ver. Açıklama veya \`\`\` işareti ekleme. U
 
         if (response.statusCode != 200) {
           throw Exception(
-            'OpenAI API error: ${response.statusCode} ${response.body}',
+            'API Hatası: ${response.statusCode} ${response.body}',
           );
         }
 
         String content = utf8.decode(response.bodyBytes);
         final data = jsonDecode(content);
+
         content =
             data['choices'][0]['message']['content']
                 .replaceAll(RegExp(r'```json|```'), '')
@@ -1150,47 +1270,29 @@ Lütfen sadece JSON olarak yanıt ver. Açıklama veya \`\`\` işareti ekleme. U
 
         final jsonData = jsonDecode(content);
         if (jsonData['words'] == null || !(jsonData['words'] is List)) {
-          throw Exception("Kelime listesi bulunamadı.");
+          throw Exception("Kelime listesi alınamadı.");
         }
 
         final List<String> wordList = List<String>.from(jsonData['words']);
-        print(wordList);
 
-        // Sonraki sayfaya geç
-        List<String> meanlar = [
-          "Yapay Zeka da ipucu yok",
-          "Yapay Zeka da ipucu yok",
-          "Yapay Zeka da ipucu yok",
-          "Yapay Zeka da ipucu yok",
-          "Yapay Zeka da ipucu yok",
-          "Yapay Zeka da ipucu yok",
-          "Yapay Zeka da ipucu yok",
-          "Yapay Zeka da ipucu yok",
-          "Yapay Zeka da ipucu yok",
-          "Yapay Zeka da ipucu yok",
-          "Yapay Zeka da ipucu yok",
-          "Yapay Zeka da ipucu yok",
-          "Yapay Zeka da ipucu yok",
-          "Yapay Zeka da ipucu yok",
-          "Yapay Zeka da ipucu yok",
-          "Yapay Zeka da ipucu yok",
-          "Yapay Zeka da ipucu yok",
-          "Yapay Zeka da ipucu yok",
-          "Yapay Zeka da ipucu yok",
-          "Yapay Zeka da ipucu yok",
-        ];
+        List<String> meanlar = List.generate(
+          wordList.length,
+          (_) => "Yapay Zeka da ipucu yok",
+        );
+
+        if (!context.mounted) return;
         Navigator.push(
           context,
           MaterialPageRoute(
             builder:
                 (_) => AdamAsmacaMain(
                   words: wordList,
-                  means: meanlar.sublist(0, selectedGameCount),
+                  means: meanlar.take(selectedGameCount).toList(),
                 ),
           ),
         );
       } else if (selectedAiModel == "Gemini AI") {
-        final apiKey = 'AIzaSyBJ9RgTMqiErMHsTrz_wsgiMPEDD8UxUaQ';
+        final apiKey = 'AIzaSyB...'; // gizli Gemini API key
         final model = GenerativeModel(model: 'gemini-pro', apiKey: apiKey);
 
         final response = await model.generateContent([Content.text(prompt)]);
@@ -1205,16 +1307,31 @@ Lütfen sadece JSON olarak yanıt ver. Açıklama veya \`\`\` işareti ekleme. U
         }
 
         final List<String> wordList = List<String>.from(jsonData['words']);
-        print(wordList);
 
+        if (!context.mounted) return;
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => AdamAsmacaMain(words: wordList, means: []),
+            builder:
+                (_) => AdamAsmacaMain(
+                  words: wordList,
+                  means: List.generate(
+                    wordList.length,
+                    (_) => "Yapay Zeka da ipucu yok",
+                  ),
+                ),
           ),
         );
       }
     } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Hata oluştu: ${e.toString()}"),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
+      }
       setState(() {
         errorMessage = e.toString();
       });
@@ -1266,6 +1383,139 @@ Lütfen sadece JSON olarak yanıt ver. Açıklama veya \`\`\` işareti ekleme. U
                       ),
                     ),
                     const SizedBox(height: 24),
+                    ElevatedButton(
+                      onPressed: () async {
+                        int selectedDifficulty =
+                            5; // Varsayılan zorluk seviyesi
+
+                        await showDialog(
+                          context: context,
+                          builder:
+                              (context) => AlertDialog(
+                                title: const Text(
+                                  "Frekans Temelli Zorluk Seçimi",
+                                ),
+                                content: StatefulBuilder(
+                                  builder:
+                                      (context, setState) => Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const Text("1 = Kolay / 10 = Zor"),
+                                          Slider(
+                                            min: 1,
+                                            max: 10,
+                                            divisions: 9,
+                                            value:
+                                                selectedDifficulty.toDouble(),
+                                            label: "$selectedDifficulty",
+                                            onChanged:
+                                                (value) => setState(() {
+                                                  selectedDifficulty =
+                                                      value.toInt();
+                                                }),
+                                          ),
+                                        ],
+                                      ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () async {
+                                      Navigator.pop(
+                                        context,
+                                      ); // önce popup'ı kapat
+
+                                      await Future.delayed(
+                                        Duration(milliseconds: 100),
+                                      ); // küçük bir gecikme, güvenlik için
+
+                                      if (!context.mounted) return;
+
+                                      final String
+                                      jsonString = await rootBundle.loadString(
+                                        'assets/frekans_gruplu_sozluk_ortaklar.json',
+                                      );
+                                      final Map<String, dynamic> jsonMap =
+                                          jsonDecode(jsonString);
+                                      final String grupKey =
+                                          selectedDifficulty.toString();
+
+                                      if (!jsonMap.containsKey(grupKey)) {
+                                        if (!context.mounted) return;
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                              "Bu zorluk seviyesi için kelime bulunamadı.",
+                                            ),
+                                          ),
+                                        );
+                                        return;
+                                      }
+
+                                      final List<dynamic> kelimelerHam =
+                                          jsonMap[grupKey];
+                                      if (kelimelerHam.isEmpty) {
+                                        if (!context.mounted) return;
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          const SnackBar(
+                                            content: Text("Bu grup boş."),
+                                          ),
+                                        );
+                                        return;
+                                      }
+
+                                      kelimelerHam.shuffle();
+                                      final List<dynamic> secilen =
+                                          kelimelerHam
+                                              .take(selectedGameCount)
+                                              .toList();
+
+                                      final List<KelimeModel> kelimeler =
+                                          secilen.map<KelimeModel>((item) {
+                                            return KelimeModel(
+                                              kelime: item["kelime"],
+                                              anlamlar: List<String>.from(
+                                                item["anlamlar"] ??
+                                                    ["Frekansa dayalı oyun"],
+                                              ),
+                                            );
+                                          }).toList();
+
+                                      if (!context.mounted) return;
+
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder:
+                                              (_) => AdamAsmacaMain(
+                                                words:
+                                                    kelimeler
+                                                        .map((e) => e.kelime)
+                                                        .toList(),
+                                                means:
+                                                    kelimeler
+                                                        .map(
+                                                          (e) =>
+                                                              e.anlamlar.first,
+                                                        )
+                                                        .toList(),
+                                              ),
+                                        ),
+                                      );
+                                    },
+                                    child: const Text("Tamam"),
+                                  ),
+                                ],
+                              ),
+                        );
+                      },
+                      child: const Text("🌺 Frekans Temelli Oyna"),
+                    ),
+
+                    const SizedBox(height: 24),
                     Center(
                       child: const Text(
                         "Yapay Zeka",
@@ -1292,13 +1542,35 @@ Lütfen sadece JSON olarak yanıt ver. Açıklama veya \`\`\` işareti ekleme. U
                                     : (value) {
                                       setState(() {
                                         selectedCategory = value!;
+                                        customTopicController
+                                            .clear(); // elle konu seçilince text temizlensin
                                       });
                                     },
                           ),
                         ),
-                        const SizedBox(width: 16),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: TextField(
+                            controller: customTopicController,
+                            decoration: const InputDecoration(
+                              hintText: "Konu yaz (isteğe bağlı)",
+                              border: OutlineInputBorder(),
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: 8,
+                              ),
+                            ),
+                            onChanged: (value) {
+                              if (value.trim().isNotEmpty) {
+                                setState(() {
+                                  selectedCategory = "Özel Konu";
+                                });
+                              }
+                            },
+                          ),
+                        ),
                       ],
                     ),
+
                     const SizedBox(height: 32),
                     Center(
                       child: ElevatedButton(
@@ -2510,11 +2782,10 @@ class _LetterPlaceholdersState extends State<LetterPlaceholders> {
                               isGuessed ? turkishToUpper(char) : '',
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: fontSize+3,
+                                fontSize: fontSize + 3,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-
                           ],
                         ),
                       ),
