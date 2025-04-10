@@ -22,10 +22,7 @@ workflows:
 
     publishing:
       app_store_connect:
-        apple_id: bksgrtms@gmail.com
-        password: $APP_SPECIFIC_PASSWORD
-        app_id: "6744431828"
-        bundle_id: "com.omerfaruk.cmfl12c"
+        integration: appstore_connect  # <- burası senin Codemagic'te verdiğin isim olmalı
         submit_to_testflight: true
 
       google_play:
