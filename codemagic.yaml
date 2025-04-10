@@ -1,9 +1,43 @@
 workflows:
-    android-workflow-id:
-        name: Android Sample Workflow
-        # .......    
-        # .......
-        # .......  
-    ios-workflow-id:
-        name: iOS Sample Workflow
-        # ......
+  full-release:
+    name: iOS + Android Build & Deploy
+    environment:
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+      vars:
+        BUNDLE_ID: "com.omerfaruk.myapp"
+        APP_STORE_APP_ID: "6744431828"
+    certificates:
+      - certificate: ios_distribution.p12
+        password: $P12_CERT_PASSWORD
+    provisioning_profiles:
+      - myapp_provision.mobileprovision
+    scripts:
+      - name: Get dependencies
+        script: flutter pub get
+
+      - name: Build Android AAB
+        script: flutter build appbundle --release
+
+      - name: Build iOS IPA
+        script: flutter build ipa --release
+
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - build/app/outputs/bundle/release/app-release.aab
+
+    publishing:
+      app_store_connect:
+        auth: codemagic_appstore
+        app_id: $APP_STORE_APP_ID
+        bundle_id: $BUNDLE_ID
+        apple_id: omerfaruk@icloud.com     # kendi Apple hesabın
+        submit_to_testflight: true
+
+      google_play:
+        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        track: internal
+        submit_as_draft: true
+        artifact_type: aab
+        
