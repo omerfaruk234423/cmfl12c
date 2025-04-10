@@ -22,7 +22,7 @@ workflows:
 
     publishing:
       app_store_connect:
-        integration: appstore_connect  # <- burası senin Codemagic'te verdiğin isim olmalı
+        integration: Codemagic # <- burası senin Codemagic'te verdiğin isim olmalı
         submit_to_testflight: true
 
       google_play:
