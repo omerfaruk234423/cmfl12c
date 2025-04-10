@@ -1,19 +1,23 @@
 workflows:
   full-release:
-    name: iOS + Android Build & Deploy
+    name: Android + iOS Release Build
+    max_build_duration: 60
     environment:
       flutter: stable
       xcode: latest
       cocoapods: default
 
     scripts:
+      - name: Clean
+        script: flutter clean
+
       - name: Get dependencies
         script: flutter pub get
 
-      - name: Build Android
+      - name: Build Android (.aab)
         script: flutter build appbundle --release
 
-      - name: Build iOS
+      - name: Build iOS (.ipa)
         script: flutter build ipa --release
 
     artifacts:
@@ -22,7 +26,8 @@ workflows:
 
     publishing:
       app_store_connect:
-        integration: Codemagic # <- burası senin Codemagic'te verdiğin isim olmalı
+        authentication: integration
+        integration: appstore_connect  # <- sen Codemagic’te ne isim verdiysen onu yaz
         submit_to_testflight: true
 
       google_play:
