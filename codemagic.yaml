@@ -8,36 +8,40 @@ workflows:
       vars:
         BUNDLE_ID: "com.omerfaruk.myapp"
         APP_STORE_APP_ID: "6744431828"
-    certificates:
-      - certificate: ios_distribution.p12
-        password: $P12_CERT_PASSWORD
-    provisioning_profiles:
-      - myapp_provision.mobileprovision
+
+    code_signing:
+      ios:
+        distribution_certificates:
+          - name: ios_distribution_cert
+            certificate_private_key: Encrypted.p12
+            certificate_password: $P12_CERT_PASSWORD
+        provisioning_profiles:
+          - myapp_provision
+
     scripts:
       - name: Get dependencies
         script: flutter pub get
 
-      - name: Build Android AAB
+      - name: Build Android
         script: flutter build appbundle --release
 
-      - name: Build iOS IPA
+      - name: Build iOS
         script: flutter build ipa --release
 
     artifacts:
-      - build/ios/ipa/*.ipa
       - build/app/outputs/bundle/release/app-release.aab
+      - build/ios/ipa/*.ipa
 
     publishing:
       app_store_connect:
-        auth: codemagic_appstore
+        integration: appstore_connect
         app_id: $APP_STORE_APP_ID
         bundle_id: $BUNDLE_ID
-        apple_id: omerfaruk@icloud.com     # kendi Apple hesabın
+        apple_id: bksgrtms@gmail.com
         submit_to_testflight: true
 
       google_play:
-        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        integration: google_play
         track: internal
         submit_as_draft: true
-        artifact_type: aab
         
