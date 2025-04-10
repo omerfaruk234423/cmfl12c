@@ -5,18 +5,6 @@ workflows:
       flutter: stable
       xcode: latest
       cocoapods: default
-      vars:
-        BUNDLE_ID: "com.omerfaruk.myapp"
-        APP_STORE_APP_ID: "6744431828"
-
-    code_signing:
-      ios:
-        distribution_certificates:
-          - name: ios_distribution_cert
-            certificate_private_key: Encrypted.p12
-            certificate_password: $P12_CERT_PASSWORD
-        provisioning_profiles:
-          - myapp_provision
 
     scripts:
       - name: Get dependencies
@@ -34,14 +22,14 @@ workflows:
 
     publishing:
       app_store_connect:
-        integration: appstore_connect
-        app_id: $APP_STORE_APP_ID
-        bundle_id: $BUNDLE_ID
         apple_id: bksgrtms@gmail.com
+        password: $APP_SPECIFIC_PASSWORD
+        app_id: "6744431828"
+        bundle_id: "com.omerfaruk.cmfl12c"
         submit_to_testflight: true
 
       google_play:
-        integration: google_play
+        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
         track: internal
         submit_as_draft: true
         
