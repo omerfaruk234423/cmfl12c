@@ -27,7 +27,7 @@ workflows:
     publishing:
       app_store_connect:
         authentication: integration
-        integration: appstore_connect  # <- sen Codemagic’te ne isim verdiysen onu yaz
+        integration: Codemagic  # <- sen Codemagic’te ne isim verdiysen onu yaz
         submit_to_testflight: true
 
       google_play:
