@@ -23,7 +23,7 @@ workflows:
       app_store_connect:
         key_id: YTURD3VPWU
         issuer_id: f3069b18-bd42-4134-96ad-aee21af1dbc4
-        private_key: |
+        api_key: |
           -----BEGIN PRIVATE KEY-----
           MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQglwq+pxWrY+OhjRYh
           fzFaQ/IGdHJmWcCmvPd36nCj2zOgCgYIKoZIzj0DAQehRANCAAROvJub5L5BULe0
