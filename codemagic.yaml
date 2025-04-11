@@ -34,18 +34,18 @@ workflows:
         submit_to_testflight: true
       google_play:
         credentials:
-        {
-        "type": "service_account",
-        "project_id": "sudeninistedigioyun",
-        "private_key_id": "94e389ef345ed2d9627393340a56aa7d061042b7",
-        "private_key": "-----BEGIN PRIVATE KEY-----\\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCOrfqZhC4oPtOK\\nLZwwdMz46R2FfGIZvGCxUX9AZIeg0UIXNuDraGHwiUyW3moYFEZPbjk2lFze7T1g\\nE3hyO0IMJY+B2GgpRuwKTzvs2Yf7RzSJSZkF0KxL4nYIUHaT194bzswQnYy+rQTE\\nvnPns5jrl4t62CX1CVs3sKWvLY4Fcw4oAR0cbPZOtRUh/ihqZovrq4ut/NEyunum\\n+wl5AQVCJ4+oEiVQkiLXakPG4kWM14dLAc/9ZAjdw4yUYeb/dCI/QkfV8TSXm9i8\\nAX2V8/WM5PJtHs3jHL1w79XcORiPdnnbrjKhdMQgWufp1Su169/yE9HXKB1gg5sD\\nN0zgtY2LAgMBAAECggEACh+aCk5wn/ZlOAaocF+5M2gG6jO7Gixdh/dKWh1H6kcu\\ns0r3hnxvhouXXZUGXhMCMhyV/qNkO4UFt81p3GEL/KSlnAbozRT1Jn4cuF9u4Ita\\n1Ord6qW1s+Srj0d2QmMspTh1DjC/jb/k+LiyrJv3m6+y+9JeTxaM3FSyTM2kqAo4\\nrrVuHgKgQef++8ESJ+2LgacdsVX3SAMduObzRAwA5zW7BsVCc+iaKLo9xo15ru49\\nPhEFEXErzcNeg3XUTGNypMRVOSDyUru9N/EHVIbLtzD4gZHYn6uEegcPhmALF22S\\nhS8Z0DKTKAeMCM+WvW+OeEXOr6Sg5UXPde2NBA/MoQKBgQDIDt0Fvmj5mDb/L6EW\\nYxQi1cXNwWwYmo43p7HMfA8BroMYKw3u3NejUs2XfjJgWAtFeNnfLfIGUJzj0OjA\\n63XajDgEfPlVKwnzX07vS2y5NWLK0VZ9N7rtZI9B4V3V+X7egNd1DJuaEjgOBR5v\\nrkQVXx/NAUjVAdjcvUZIPMqzyQKBgQC2k684wrkZa++Ov5naz0ssrkCBq57kFo3y\\nE4JDwoS8KQYCTmzbjI4CzZdcMSpSaRpshpuZ6Pok9q33Va1aXf/f91z0Uel6lU5n\\nFhreJMEjkX9O/0zfucxjgeMwsaij1wEUNhVyaqffJhnRnZrm6lm68rtCvwHv2Umy\\nufBqZqcYswKBgEzQACbzbAThX8RtOjGJSzLw12jf6iwsM4zE82xq+awQoD8IUOo0\\nmwsXgN640ojRZUqAU07wqiuoigSisqtX/MEz81It1eHQi5qJLpqMYCtghxUOeWHM\\noxYA9Uw7Rrcge4jc+Vz0wU3Pzvv7FSuWQofeJSymYJuAgQ6IEdMsnDuZAoGAa2Rh\\nO9zl7bscdPXktN0b1dNFZECjvHw70DmDdQH0+4yR2UdyJo39dk6iCnts7n6eKVng\\nKt7sTFPBLmv6BN6nxICG77tCv3UVYfORqDssVBSgMsJe4HY0cA+VqC3ICV9NZisN\\n4Hg1+D88Dp1K4SrVzu46Ed+ybvd7ryJJ9Pweq5sCgYEArKY44MYhnnMy1tDdH9sW\\nQQQsF45priMBPbjYeEc3FtCqdsCeO1UrveEYjlBRDSv1FXHmy7Hty9Dn+qGfIhq2\\nIinPHlEbMfNUaBe30e0fsk3vd5T4Jww+WUMuTjuIngUaOTVbzXws8lRzQOOfLQee\\nc8C8crZw/Hydkmld3d17mq8=\\n-----END PRIVATE KEY-----\\n",
-        "client_email": "codemagic-play-upload@sudeninistedigioyun.iam.gserviceaccount.com",
-        "client_id": "110224671686414588638",
-        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-        "token_uri": "https://oauth2.googleapis.com/token",
-        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-        "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/codemagic-play-upload%40sudeninistedigioyun.iam.gserviceaccount.com",
-        "universe_domain": "googleapis.com"
-        }
+          {
+          "type": "service_account",
+          "project_id": "sudeninistedigioyun",
+          "private_key_id": "94e389ef345ed2d9627393340a56aa7d061042b7",
+          "private_key": "-----BEGIN PRIVATE KEY-----\\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCOrfqZhC4oPtOK\\nLZwwdMz46R2FfGIZvGCxUX9AZIeg0UIXNuDraGHwiUyW3moYFEZPbjk2lFze7T1g\\nE3hyO0IMJY+B2GgpRuwKTzvs2Yf7RzSJSZkF0KxL4nYIUHaT194bzswQnYy+rQTE\\nvnPns5jrl4t62CX1CVs3sKWvLY4Fcw4oAR0cbPZOtRUh/ihqZovrq4ut/NEyunum\\n+wl5AQVCJ4+oEiVQkiLXakPG4kWM14dLAc/9ZAjdw4yUYeb/dCI/QkfV8TSXm9i8\\nAX2V8/WM5PJtHs3jHL1w79XcORiPdnnbrjKhdMQgWufp1Su169/yE9HXKB1gg5sD\\nN0zgtY2LAgMBAAECggEACh+aCk5wn/ZlOAaocF+5M2gG6jO7Gixdh/dKWh1H6kcu\\ns0r3hnxvhouXXZUGXhMCMhyV/qNkO4UFt81p3GEL/KSlnAbozRT1Jn4cuF9u4Ita\\n1Ord6qW1s+Srj0d2QmMspTh1DjC/jb/k+LiyrJv3m6+y+9JeTxaM3FSyTM2kqAo4\\nrrVuHgKgQef++8ESJ+2LgacdsVX3SAMduObzRAwA5zW7BsVCc+iaKLo9xo15ru49\\nPhEFEXErzcNeg3XUTGNypMRVOSDyUru9N/EHVIbLtzD4gZHYn6uEegcPhmALF22S\\nhS8Z0DKTKAeMCM+WvW+OeEXOr6Sg5UXPde2NBA/MoQKBgQDIDt0Fvmj5mDb/L6EW\\nYxQi1cXNwWwYmo43p7HMfA8BroMYKw3u3NejUs2XfjJgWAtFeNnfLfIGUJzj0OjA\\n63XajDgEfPlVKwnzX07vS2y5NWLK0VZ9N7rtZI9B4V3V+X7egNd1DJuaEjgOBR5v\\nrkQVXx/NAUjVAdjcvUZIPMqzyQKBgQC2k684wrkZa++Ov5naz0ssrkCBq57kFo3y\\nE4JDwoS8KQYCTmzbjI4CzZdcMSpSaRpshpuZ6Pok9q33Va1aXf/f91z0Uel6lU5n\\nFhreJMEjkX9O/0zfucxjgeMwsaij1wEUNhVyaqffJhnRnZrm6lm68rtCvwHv2Umy\\nufBqZqcYswKBgEzQACbzbAThX8RtOjGJSzLw12jf6iwsM4zE82xq+awQoD8IUOo0\\nmwsXgN640ojRZUqAU07wqiuoigSisqtX/MEz81It1eHQi5qJLpqMYCtghxUOeWHM\\noxYA9Uw7Rrcge4jc+Vz0wU3Pzvv7FSuWQofeJSymYJuAgQ6IEdMsnDuZAoGAa2Rh\\nO9zl7bscdPXktN0b1dNFZECjvHw70DmDdQH0+4yR2UdyJo39dk6iCnts7n6eKVng\\nKt7sTFPBLmv6BN6nxICG77tCv3UVYfORqDssVBSgMsJe4HY0cA+VqC3ICV9NZisN\\n4Hg1+D88Dp1K4SrVzu46Ed+ybvd7ryJJ9Pweq5sCgYEArKY44MYhnnMy1tDdH9sW\\nQQQsF45priMBPbjYeEc3FtCqdsCeO1UrveEYjlBRDSv1FXHmy7Hty9Dn+qGfIhq2\\nIinPHlEbMfNUaBe30e0fsk3vd5T4Jww+WUMuTjuIngUaOTVbzXws8lRzQOOfLQee\\nc8C8crZw/Hydkmld3d17mq8=\\n-----END PRIVATE KEY-----\\n",
+          "client_email": "codemagic-play-upload@sudeninistedigioyun.iam.gserviceaccount.com",
+          "client_id": "110224671686414588638",
+          "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+          "token_uri": "https://oauth2.googleapis.com/token",
+          "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+          "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/codemagic-play-upload%40sudeninistedigioyun.iam.gserviceaccount.com",
+          "universe_domain": "googleapis.com"
+          }
         track: internal
         submit_as_draft: true
