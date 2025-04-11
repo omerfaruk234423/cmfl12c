@@ -24,12 +24,12 @@ workflows:
         key_id: YTURD3VPWU
         issuer_id: f3069b18-bd42-4134-96ad-aee21af1dbc4
         private_key: |
-        -----BEGIN PRIVATE KEY-----
-        MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQglwq+pxWrY+OhjRYh
-        fzFaQ/IGdHJmWcCmvPd36nCj2zOgCgYIKoZIzj0DAQehRANCAAROvJub5L5BULe0
-        8dxv+pof4Vtfm6bJzZ59CqVfu271THt94cDAXArnCVyn1zOdeuEob8gUuz5+Ooiu
-        tL+z/1jV
-        -----END PRIVATE KEY-----
+          -----BEGIN PRIVATE KEY-----
+          MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQglwq+pxWrY+OhjRYh
+          fzFaQ/IGdHJmWcCmvPd36nCj2zOgCgYIKoZIzj0DAQehRANCAAROvJub5L5BULe0
+          8dxv+pof4Vtfm6bJzZ59CqVfu271THt94cDAXArnCVyn1zOdeuEob8gUuz5+Ooiu
+          tL+z/1jV
+          -----END PRIVATE KEY-----
 
         submit_to_testflight: true
       google_play:
