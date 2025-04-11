@@ -7,24 +7,18 @@ workflows:
       cocoapods: default
       vars:
         BUNDLE_ID: "com.omerfaruk.cmfl12c"
-
     scripts:
       - name: Clean
         script: flutter clean
-
       - name: Get dependencies
         script: flutter pub get
-
       - name: Build Android AAB
         script: flutter build appbundle --release
-
       - name: Build iOS IPA
         script: flutter build ipa --release
-
     artifacts:
       - build/app/outputs/bundle/release/app-release.aab
       - build/ios/ipa/*.ipa
-
     publishing:
       app_store_connect:
         key_id: YTURD3VPWU
@@ -37,9 +31,7 @@ workflows:
           isRcE+49
           -----END PRIVATE KEY-----
         submit_to_testflight: true
-
       google_play:
         credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
         track: internal
         submit_as_draft: true
-        
