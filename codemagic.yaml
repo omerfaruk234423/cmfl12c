@@ -32,7 +32,4 @@ workflows:
           -----END PRIVATE KEY-----
 
         submit_to_testflight: true
-      google_play:
-        credentials: $GCLOUD
-        track: internal
-        submit_as_draft: true
+        
