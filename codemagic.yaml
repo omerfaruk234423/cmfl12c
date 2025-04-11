@@ -33,6 +33,6 @@ workflows:
 
         submit_to_testflight: true
       google_play:
-        credentials: $GCLOUD
+        credentials: Encrypted(base64:$GCLOUD)
         track: internal
         submit_as_draft: true
