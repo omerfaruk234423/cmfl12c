@@ -1,23 +1,18 @@
 workflows:
   full-release:
-    name: Android + iOS Release Build
+    name: iOS Release Build
     environment:
       flutter: stable
       xcode: latest
       cocoapods: default
-      vars:
-        BUNDLE_ID: "com.omerfaruk.cmfl12c"
     scripts:
       - name: Clean
         script: flutter clean
       - name: Get dependencies
         script: flutter pub get
-      - name: Build Android AAB
-        script: flutter build appbundle --release
       - name: Build iOS IPA
         script: flutter build ipa --release
     artifacts:
-      - build/app/outputs/bundle/release/app-release.aab
       - build/ios/ipa/*.ipa
     publishing:
       app_store_connect:
@@ -30,6 +25,5 @@ workflows:
           8dxv+pof4Vtfm6bJzZ59CqVfu271THt94cDAXArnCVyn1zOdeuEob8gUuz5+Ooiu
           tL+z/1jV
           -----END PRIVATE KEY-----
-
         submit_to_testflight: true
         
