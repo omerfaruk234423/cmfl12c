@@ -26,8 +26,11 @@ workflows:
         private_key: |
           -----BEGIN PRIVATE KEY-----
           MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQga3hjBAZOQ3sb5w5Q
+          
           qUAvl9NSF2k0Wpqu6EXEPh5POUmgCgYIKoZIzj0DAQehRANCAARuFkTh3rImS+Uc
+          
           BeCt+q1zGB8pVu9q9buocQZ2JcMgTLDkFbJFGKV+LweRF3JVJZCNc1M5bjqtjgIR
+          
           isRcE+49
           -----END PRIVATE KEY-----
         submit_to_testflight: true
