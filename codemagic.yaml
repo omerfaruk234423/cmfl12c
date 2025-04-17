@@ -26,5 +26,4 @@ workflows:
           tL+z/1jV
           -----END PRIVATE KEY-----
         submit_to_testflight: true
-        provisioning_profile: $CM_PROVISIONING_PROFILE_PATH
         
