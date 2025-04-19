@@ -8,12 +8,17 @@ workflows:
     environment:
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: com.omerfaruk.cmfl12c # <-- BURAYA KENDİ BUNDLE ID'İNİ YAZ
+        bundle_identifier: com.omerfaruk.cmfl12c
       vars:
         flutter: stable
         xcode: latest
         cocoapods: default
     scripts:
+      - name: Upgrade to latest Flutter stable version
+        script: |
+          git clone https://github.com/flutter/flutter.git -b stable
+          export PATH="$PATH:`pwd`/flutter/bin"
+          flutter doctor
       - name: Set up code signing settings on Xcode project
         script: |
           xcode-project use-profiles
