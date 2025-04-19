@@ -16,8 +16,7 @@ workflows:
     scripts:
       - name: Upgrade to latest Flutter stable version
         script: |
-          git clone https://github.com/flutter/flutter.git -b stable
-          export PATH="$PATH:`pwd`/flutter/bin"
+          flutter upgrade
           flutter doctor
       - name: Get Flutter packages
         script: |
