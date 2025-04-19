@@ -19,9 +19,6 @@ workflows:
           git clone https://github.com/flutter/flutter.git -b stable
           export PATH="$PATH:`pwd`/flutter/bin"
           flutter doctor
-      - name: Set up code signing settings on Xcode project
-        script: |
-          xcode-project use-profiles
       - name: Get Flutter packages
         script: |
           flutter pub get
