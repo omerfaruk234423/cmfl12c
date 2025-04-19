@@ -24,6 +24,22 @@ workflows:
       - name: Install pods
         script: |
           find . -name "Podfile" -execdir pod install \;
+      - name: Create export_options.plist for App Store
+        script: |
+          cat <<EOF > /Users/builder/export_options.plist
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+            <dict>
+              <key>method</key>
+              <string>app-store</string>
+              <key>uploadSymbols</key>
+              <true/>
+              <key>teamID</key>
+              <string>S4BFF79U9Z</string> <!-- Update with your Apple Developer Team ID -->
+            </dict>
+          </plist>
+          EOF
       - name: Flutter build ipa
         script: |
           flutter build ipa --release \
