@@ -8,7 +8,7 @@ workflows:
     environment:
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: your.bundle.id # <-- BURAYA KENDİ BUNDLE ID'İNİ YAZ
+        bundle_identifier: com.omerfaruk.cmfl12c # <-- BURAYA KENDİ BUNDLE ID'İNİ YAZ
       vars:
         flutter: stable
         xcode: latest
